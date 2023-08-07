@@ -20,7 +20,8 @@ router.get('/:pid', async(req, res) => {
     try{
     const pid = parseInt(req.params.pid)
     const productById = await productManager.byId(pid);
-    res.send(productById)
+    if (!productById) return res.status(404).json({status:"error", message:"Product not found"});
+    return res.send(productById)
     }catch {
         return res.status(404).json({status: "error", message: 'Product not found'})
     }
@@ -32,7 +33,7 @@ router.post('/', async (req, res) => {
     const data = req.body
     const result = await productManager.create(data)
     res.send(result)
-    }catch {res.status(404).json({status: "error"})}
+    }catch {res.status(500).json({status: "error", message:`Internal server error. ${error}`})}
 })
 
 router.put('/:pid', async(req, res) =>{
@@ -40,10 +41,10 @@ router.put('/:pid', async(req, res) =>{
     const pid = parseInt(req.params.pid)
     const product = req.body
     const updateById = await productManager.updateById(pid, product);
-    console.log("Product Upload")
-    res.send(updateById)
+    if (!updateById) return res.status(404).json({ status: "error", message: "Product not found" });
+    return res.send(updateById);
     }catch {
-        res.status(404).json({status: "error", message: "Product not upload"})
+        res.status(500).json({status: "error", message: `Internal server error. ${error}`})
     }
 })
 
@@ -60,7 +61,5 @@ router.delete('/:pid', async(req, res) => {
       res.status(404).json({status: "error", message: "Product not delete"})
     }
   })
-
- 
 
 export default router
