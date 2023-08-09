@@ -17,6 +17,7 @@ app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 
 app.use('/', viewsRouter)
+app.use('/', express.static('./src/public'));
 app.use('/api/products', productRouter)
 app.use('/api/cart', cartRouter)
 

@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 
 router.get('/products', async (req, res) => {
     const products = await productManager.list()
-    res.render('products', {products})
+    res.render('home', {products})
 })
 
 router.get('/products-realtime', async (req, res) => {
@@ -26,6 +26,6 @@ router.get('/form-products', async (req, res) => {
 router.post('/form-products', async (req, res) => {
     const data = req.body
     const result = await productManager.create(data)
-    res.redirect('/products')
+    res.redirect('/')
 })
 export default router
